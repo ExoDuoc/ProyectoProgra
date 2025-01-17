@@ -37,7 +37,7 @@
       <ion-item>
         <ion-input
           labelPlacement="floating"
-          label="Genero"
+          label="Género"
           type="text"
           placeholder="Masculino o Femenino"
           [(ngModel)]="user.genero"
@@ -55,7 +55,12 @@
       </ion-item>
       
 
-      <ion-button expand="block" color="success" (click)="registrar()" >Registrate!</ion-button>
+      <ion-button expand="block" color="success" (click)="registrar()" >Regístrate!</ion-button>
+      
+      <ion-button expand="block" fill="clear" routerLink="/login">
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        Ir al Login
+      </ion-button>
     </ion-list>
   </ion-card-content>
 </ion-content>

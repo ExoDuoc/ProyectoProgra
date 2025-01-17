@@ -4,6 +4,34 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          label="Correo"
+          type="email"
+          placeholder="usuario@profesor.duoc.cl o usuario"
+          [(ngModel)]="user.email"
+        ></ion-input>
+      </ion-item>
 
+      <ion-item>
+        <ion-input
+          labelPlacement="floating"
+          label="Contraseña"
+          type="password"
+          value=""
+          [(ngModel)]="user.password"
+        ></ion-input>
+      </ion-item>
+
+      <ion-button expand="block" color="success" (click)="ingresar()">Ingresar</ion-button>
+
+      <ion-button expand="block" fill="clear" (click)="recuperarContrasena()">Recuperar Contraseña</ion-button>
+
+      <ion-button expand="block" fill="clear" routerLink="/registro">Registrarse</ion-button>
+    </ion-list>
+  </ion-card-content>
 </ion-content>

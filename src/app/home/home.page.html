@@ -1,20 +1,39 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title>
-      Inicio
-    </ion-title>
+    <ion-title>Home</ion-title>
+    <ion-buttons slot="end">
+      <!-- Botón Cerrar Sesión -->
+      <ion-button color="danger" (click)="cerrarSesion()">Cerrar Sesión</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Gestión de Presupuestos</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Botón Crear Presupuesto -->
+      <ion-button expand="block" color="primary" (click)="crearPresupuesto()">Crear Presupuesto</ion-button>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+      <ion-list>
+        <ion-item-divider color="light">Lista de Presupuestos</ion-item-divider>
+
+        <!-- Mostrar los presupuestos en una lista -->
+        <ion-item *ngFor="let presupuesto of presupuestos">
+          <ion-label>{{ presupuesto.nombre }}</ion-label>
+          <ion-button fill="outline" color="secondary" (click)="editarPresupuesto(presupuesto)">Editar</ion-button>
+          <ion-button fill="outline" color="danger" (click)="eliminarPresupuesto(presupuesto)">Eliminar</ion-button>
+        </ion-item>
+      </ion-list>
+
+      <!-- Sección para el CRUD -->
+      <ion-item-divider color="light">Acciones CRUD</ion-item-divider>
+
+      <ion-button expand="block" color="success" (click)="crear()">Crear</ion-button>
+      <ion-button expand="block" color="warning" (click)="modificar()">Modificar</ion-button>
+      <ion-button expand="block" color="danger" (click)="eliminar()">Eliminar</ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
