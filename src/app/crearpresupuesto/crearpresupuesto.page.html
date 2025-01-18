@@ -1,6 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>Registrar Gasto</ion-title>
+    <ion-buttons slot="start">
+      <!-- Botón para regresar al Home -->
+      <ion-button color="primary" (click)="regresarAlHome()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        Home
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -35,15 +42,36 @@
         <!-- Campo Débito/Crédito -->
         <ion-item>
           <ion-label>Débito/Crédito</ion-label>
-          <ion-select [(ngModel)]="gasto.tipo" placeholder="Seleccionar">
+          <ion-select [(ngModel)]="gasto.tipo" placeholder="Seleccionar" (ionChange)="onTipoChange()">
             <ion-select-option value="debito">Débito</ion-select-option>
             <ion-select-option value="credito">Crédito</ion-select-option>
           </ion-select>
         </ion-item>
         <div *ngIf="error && !gasto.tipo" class="error">Debe seleccionar Débito o Crédito.</div>
 
+        <!-- Campo Cuotas (Visible solo si es Crédito) -->
+        <ion-item *ngIf="gasto.tipo === 'credito'">
+          <ion-label position="floating">Cantidad de Cuotas</ion-label>
+          <ion-input type="number" [(ngModel)]="gasto.cuotas"></ion-input>
+        </ion-item>
+        <div *ngIf="error && gasto.tipo === 'credito' && !gasto.cuotas" class="error">
+          La cantidad de cuotas es obligatoria para crédito.
+        </div>
+
         <!-- Botón para registrar -->
         <ion-button expand="block" color="primary" (click)="registrarGasto()">Registrar Gasto</ion-button>
+      </ion-list>
+
+      <!-- Lista de gastos generados -->
+      <ion-list *ngIf="gastos.length > 0">
+        <ion-item-divider color="light">Lista de Gastos Generados</ion-item-divider>
+        <ion-item *ngFor="let gasto of gastos">
+          <ion-label>
+            <h2>{{ gasto.descripcion }}</h2>
+            <p>Monto: {{ gasto.monto }}</p>
+            <p>Fecha: {{ gasto.fecha }}</p>
+          </ion-label>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
