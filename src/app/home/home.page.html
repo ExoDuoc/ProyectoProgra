@@ -15,7 +15,9 @@
     </ion-card-header>
     <ion-card-content>
       <!-- Botón Crear Presupuesto -->
-      <ion-button expand="block" color="primary" (click)="crearPresupuesto()">Crear Presupuesto</ion-button>
+      <ion-button expand="block" color="primary" routerLink="/crearpresupuesto">
+        Crear Presupuesto
+      </ion-button>
 
       <ion-list>
         <ion-item-divider color="light">Lista de Presupuestos</ion-item-divider>
@@ -28,12 +30,12 @@
         </ion-item>
       </ion-list>
 
-      <!-- Sección para el CRUD -->
+      <!-- Sección para el CRUD 
       <ion-item-divider color="light">Acciones CRUD</ion-item-divider>
 
       <ion-button expand="block" color="success" (click)="crear()">Crear</ion-button>
       <ion-button expand="block" color="warning" (click)="modificar()">Modificar</ion-button>
-      <ion-button expand="block" color="danger" (click)="eliminar()">Eliminar</ion-button>
+      <ion-button expand="block" color="danger" (click)="eliminar()">Eliminar</ion-button>-->
     </ion-card-content>
   </ion-card>
 </ion-content>

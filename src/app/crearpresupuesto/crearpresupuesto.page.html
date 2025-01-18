@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Registrar Gasto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Formulario de Registro de Gasto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <!-- Campo Monto -->
+        <ion-item>
+          <ion-label position="floating">Monto</ion-label>
+          <ion-input type="number" [(ngModel)]="gasto.monto"></ion-input>
+        </ion-item>
+        <div *ngIf="error && !gasto.monto" class="error">El monto es obligatorio.</div>
+
+        <!-- Campo Fecha -->
+        <ion-item>
+          <ion-label position="floating">Fecha</ion-label>
+          <ion-input type="date" [(ngModel)]="gasto.fecha"></ion-input>
+        </ion-item>
+        <div *ngIf="error && !gasto.fecha" class="error">La fecha es obligatoria.</div>
+
+        <!-- Campo Descripción -->
+        <ion-item>
+          <ion-label position="floating">Descripción</ion-label>
+          <ion-input type="text" [(ngModel)]="gasto.descripcion"></ion-input>
+        </ion-item>
+        <div *ngIf="error && !gasto.descripcion" class="error">La descripción es obligatoria.</div>
+
+        <!-- Campo Débito/Crédito -->
+        <ion-item>
+          <ion-label>Débito/Crédito</ion-label>
+          <ion-select [(ngModel)]="gasto.tipo" placeholder="Seleccionar">
+            <ion-select-option value="debito">Débito</ion-select-option>
+            <ion-select-option value="credito">Crédito</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="error && !gasto.tipo" class="error">Debe seleccionar Débito o Crédito.</div>
+
+        <!-- Botón para registrar -->
+        <ion-button expand="block" color="primary" (click)="registrarGasto()">Registrar Gasto</ion-button>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
