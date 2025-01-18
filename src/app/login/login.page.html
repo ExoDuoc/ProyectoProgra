@@ -16,7 +16,8 @@
           [(ngModel)]="user.email"
         ></ion-input>
       </ion-item>
-
+      <!-- Mensaje de error para el campo correo -->
+      <div *ngIf="error.email" class="error">El correo es obligatorio.</div>
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -26,7 +27,9 @@
           [(ngModel)]="user.password"
         ></ion-input>
       </ion-item>
-
+      <!-- Mensaje de error para el campo contraseña -->
+      <div *ngIf="error.password" class="error">La contraseña es obligatoria.</div>
+      
       <ion-button expand="block" color="success" (click)="ingresar()">Ingresar</ion-button>
 
       <ion-button expand="block" fill="clear" (click)="recuperarContrasena()">Recuperar Contraseña</ion-button>

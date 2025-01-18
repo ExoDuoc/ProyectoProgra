@@ -12,10 +12,25 @@ export class LoginPage {
     password: ''
   };
 
+  error = {
+    email: false,
+    password: false
+  };
+
   constructor(private router: Router) {}
 
   ingresar() {
-    // Aquí deberías agregar la lógica para verificar las credenciales
+    // Reiniciamos los errores antes de validar
+    this.error.email = !this.user.email;
+    this.error.password = !this.user.password;
+
+    // Si hay algún campo vacío, mostramos los errores
+    if (this.error.email || this.error.password) {
+      alert('Por favor, completa todos los campos.');
+      return;
+    }
+
+    // Validación de credenciales
     if (this.user.email === 'admin' && this.user.password === 'admin') {
       this.router.navigate(['/home']);
     } else {
@@ -24,7 +39,6 @@ export class LoginPage {
   }
 
   recuperarContrasena() {
-    // Lógica para recuperar contraseña
     alert('Recuperar contraseña');
   }
 }
