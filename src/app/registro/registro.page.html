@@ -7,6 +7,7 @@
 <ion-content [fullscreen]="true">
   <ion-card-content>
     <ion-list>
+      <!-- Campo Nombre -->
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -16,6 +17,9 @@
           [(ngModel)]="user.nombre"
         ></ion-input>
       </ion-item>
+      <div *ngIf="error && !user.nombre" class="error">El nombre es obligatorio.</div>
+
+      <!-- Campo Email -->
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -25,6 +29,9 @@
           [(ngModel)]="user.email"
         ></ion-input>
       </ion-item>
+      <div *ngIf="error && !user.email" class="error">El email es obligatorio.</div>
+
+      <!-- Campo Fecha de Nacimiento -->
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -34,6 +41,11 @@
           [(ngModel)]="user.f_nacimiento"
         ></ion-input>
       </ion-item>
+      <div *ngIf="error && !user.f_nacimiento" class="error">
+        La fecha de nacimiento es obligatoria.
+      </div>
+
+      <!-- Campo Género -->
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -43,7 +55,9 @@
           [(ngModel)]="user.genero"
         ></ion-input>
       </ion-item>
+      <div *ngIf="error && !user.genero" class="error">El género es obligatorio.</div>
 
+      <!-- Campo Contraseña -->
       <ion-item>
         <ion-input
           labelPlacement="floating"
@@ -53,10 +67,13 @@
           [(ngModel)]="user.password"
         ></ion-input>
       </ion-item>
-      
+      <div *ngIf="error && !user.password" class="error">
+        La contraseña es obligatoria.
+      </div>
 
-      <ion-button expand="block" color="success" (click)="registrar()" >Regístrate!</ion-button>
-      
+      <!-- Botones -->
+      <ion-button expand="block" color="success" (click)="registrar()">Regístrate!</ion-button>
+
       <ion-button expand="block" fill="clear" routerLink="/login">
         <ion-icon name="arrow-forward" slot="start"></ion-icon>
         Ir al Login
