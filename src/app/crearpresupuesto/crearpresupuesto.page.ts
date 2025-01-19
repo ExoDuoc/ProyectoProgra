@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-crearpresupuesto',
@@ -12,13 +13,13 @@ export class CrearpresupuestoPage {
     fecha: '',
     descripcion: '',
     tipo: '', // Débito o Crédito
-    cuotas: null // Solo para Crédito
+    cuotas: null, // Solo para Crédito
   };
 
   error: boolean = false;
   gastos: any[] = []; // Lista de gastos generados
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private toastController: ToastController) {}
 
   onTipoChange() {
     if (this.gasto.tipo === 'debito') {
@@ -26,14 +27,26 @@ export class CrearpresupuestoPage {
     }
   }
 
+  async mostrarToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      color,
+      position: 'top',
+    });
+    await toast.present();
+  }
+
   registrarGasto() {
     if (!this.gasto.monto || !this.gasto.fecha || !this.gasto.descripcion || !this.gasto.tipo) {
       this.error = true;
+      this.mostrarToast('Por favor completa todos los campos obligatorios.', 'danger');
       return;
     }
 
     if (this.gasto.tipo === 'credito' && !this.gasto.cuotas) {
       this.error = true;
+      this.mostrarToast('Por favor ingresa el número de cuotas.', 'danger');
       return;
     }
 
@@ -64,7 +77,7 @@ export class CrearpresupuestoPage {
     }
 
     console.log('Gastos registrados:', this.gastos);
-    alert('Gasto(s) registrado(s) exitosamente!');
+    this.mostrarToast('Gasto(s) registrado(s) exitosamente!', 'success');
   }
 
   regresarAlHome() {
