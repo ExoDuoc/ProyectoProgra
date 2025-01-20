@@ -64,14 +64,23 @@
 
       <!-- Lista de gastos generados -->
       <ion-list *ngIf="gastos.length > 0">
-        <ion-item-divider color="light">Lista de Gastos Generados</ion-item-divider>
-        <ion-item *ngFor="let gasto of gastos">
-          <ion-label>
-            <h2>{{ gasto.descripcion }}</h2>
-            <p>Monto: {{ gasto.monto }}</p>
-            <p>Fecha: {{ gasto.fecha }}</p>
-          </ion-label>
-        </ion-item>
+        <ion-item-divider color="light">Lista de Gastos Generadoss</ion-item-divider>
+        <ion-item-sliding *ngFor="let g of gastos; let i = index">
+          <!-- Detalles del gasto -->
+          <ion-item>
+            <ion-label>
+              <h2>{{ g.descripcion }}</h2>
+              <p>Monto: {{ g.monto }}</p>
+              <p>Fecha: {{ g.fecha }}</p>
+            </ion-label>
+          </ion-item>
+
+          <!-- Botones de edición y eliminación -->
+          <ion-item-options side="end">
+            <ion-item-option color="warning" (click)="editarGasto(i)">Editar</ion-item-option>
+            <ion-item-option color="danger" (click)="eliminarGasto(i)">Eliminar</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </ion-list>
     </ion-card-content>
   </ion-card>

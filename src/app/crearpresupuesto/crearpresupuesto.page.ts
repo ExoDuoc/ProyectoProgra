@@ -76,8 +76,28 @@ export class CrearpresupuestoPage {
       }
     }
 
-    console.log('Gastos registrados:', this.gastos);
     this.mostrarToast('Gasto(s) registrado(s) exitosamente!', 'success');
+    this.limpiarFormulario();
+  }
+
+  limpiarFormulario() {
+    this.gasto = {
+      monto: '',
+      fecha: '',
+      descripcion: '',
+      tipo: '',
+      cuotas: null,
+    };
+  }
+
+  editarGasto(index: number) {
+    this.gasto = { ...this.gastos[index] }; // Copia los datos del gasto a editar
+    this.gastos.splice(index, 1); // Elimina temporalmente el gasto de la lista
+  }
+
+  eliminarGasto(index: number) {
+    this.gastos.splice(index, 1); // Elimina el gasto de la lista
+    this.mostrarToast('Gasto eliminado exitosamente.', 'success');
   }
 
   regresarAlHome() {
