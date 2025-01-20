@@ -15,14 +15,15 @@ export class RegistroPage implements OnInit {
     genero: '',
   };
 
-  error: boolean = false; // Se usa para mostrar mensajes de error
+  error: boolean = false; // Para mostrar errores de campos vacíos
+  mensajeError: string = ''; // Para mensajes de error específicos
 
   constructor(private usuarioService: UsuarioService) {}
 
   ngOnInit() {}
 
   registrar() {
-    // Verificar si hay campos vacíos
+    // Validar campos vacíos
     if (
       !this.user.nombre ||
       !this.user.email ||
@@ -30,24 +31,35 @@ export class RegistroPage implements OnInit {
       !this.user.f_nacimiento ||
       !this.user.genero
     ) {
-      this.error = true; // Activa los mensajes de error si hay campos vacíos
+      this.error = true;
+      alert("Por favor, complete todos los campos.");
       return;
     }
 
-    this.error = false; // Limpia el estado de error si todos los campos están completos
+    // Intentar registrar el usuario
+    const resultado = this.usuarioService.registrarUsuario(this.user);
+    console.log("Resultado",resultado)
+    if (!resultado.success) {
+      this.error = true;
+      console.log("Correo ya ha sido registrado",resultado)
+      alert("¡Éste correo ya ha sido registrado! Intenta con otro");
+      this.mensajeError = resultado.message; // Mostrar error si el correo ya está registrado
+    } else {
+      console.log("Correo ",resultado)
+      this.error = false;
+      this.mensajeError = '';
+      alert(resultado.message); // Usuario registrado con éxito
+      this.limpiarFormulario(); // Limpia el formulario después del registro
+    }
+  }
 
-    console.log('Registrando...');
-    console.log(this.user);
-
-    this.usuarioService.registrarUsuario(this.user).subscribe(
-      (res) => {
-        console.log(res);
-        alert('¡Usuario registrado con éxito!');
-      },
-      (err) => {
-        console.error(err);
-        alert('Hubo un error al registrar el usuario.');
-      }
-    );
+  limpiarFormulario() {
+    this.user = {
+      nombre: '',
+      email: '',
+      password: '',
+      f_nacimiento: '',
+      genero: '',
+    };
   }
 }

@@ -1,25 +1,32 @@
-import { HttpClient, HttpHeaders ,HttpErrorResponse} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable ,retry} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuarioService {
+  private localStorageKey = 'usuarios';
 
-  apiUrl = 'https://71923649-e30a-4ac4-8def-5ff668b2a6c9-00-pgx9yevv9hdc.picard.replit.dev';
+  constructor() {}
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*' // Ortografía corregida
-    })
-  };
+  registrarUsuario(user: any): { success: boolean; message: string } {
+    // Obtener usuarios existentes desde LocalStorage
+    const usuarios = JSON.parse(localStorage.getItem(this.localStorageKey) || '[]');
 
-  constructor(private http:HttpClient) { }
+    // Validar que el correo sea único
+    const existeCorreo = usuarios.some((u: any) => u.email === user.email);
+    if (existeCorreo) {
+      return { success: false, message: 'El correo ya está registrado.' };
+    }
 
-  registrarUsuario(user:any): Observable<any> {
-    
-    return this.http.post(`${this.apiUrl}/usuario`, user, this.httpOptions);
+    // Agregar el nuevo usuario a la lista
+    usuarios.push(user);
+    localStorage.setItem(this.localStorageKey, JSON.stringify(usuarios));
+
+    return { success: true, message: 'Usuario registrado con éxito.' };
+  }
+
+  // Método adicional para obtener usuarios (si lo necesitas)
+  obtenerUsuarios(): any[] {
+    return JSON.parse(localStorage.getItem(this.localStorageKey) || '[]');
   }
 }
