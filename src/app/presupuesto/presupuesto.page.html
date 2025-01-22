@@ -1,13 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>presupuesto</ion-title>
+    <!-- Botón Regresar -->
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ nombrePresupuesto }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">presupuesto</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-list>
+    <ion-item-divider color="light">Lista de Gastos</ion-item-divider>
+
+    <ion-item *ngFor="let gasto of gastos">
+      <ion-label>
+        <h2>{{ gasto.descripcion }}</h2>
+        <p>Monto: {{ gasto.monto }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
