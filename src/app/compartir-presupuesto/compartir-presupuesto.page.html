@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Compartir Presupuesto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Formulario para ingresar el correo -->
+  <ion-item>
+    <ion-label position="floating">Correo</ion-label>
+    <ion-input [(ngModel)]="correo" type="email"></ion-input>
+  </ion-item>
+
+  <!-- Botón para compartir -->
+  <ion-button expand="block" color="primary" (click)="compartir()">Compartir</ion-button>
+</ion-content>

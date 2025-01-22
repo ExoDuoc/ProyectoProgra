@@ -27,12 +27,19 @@ const routes: Routes = [
     path: 'crearpresupuesto',
     loadChildren: () => import('./crearpresupuesto/crearpresupuesto.module').then( m => m.CrearpresupuestoPageModule)
   },
+  {
+    path: 'presupuesto/:nombre',
+    loadChildren: () => import('./presupuesto/presupuesto.module').then(m => m.PresupuestoPageModule)
+  },  
+  {
+    path: 'compartir-presupuesto',
+    loadChildren: () => import('./compartir-presupuesto/compartir-presupuesto.module').then( m => m.CompartirPresupuestoPageModule)
+  },
   // Ruta comodín para manejar errores 404
   {
     path: '**',
     redirectTo: 'not-found', // Redirige a la página de error 404
   },
-  
 ];
 
 @NgModule({

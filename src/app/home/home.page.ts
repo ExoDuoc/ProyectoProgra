@@ -25,9 +25,9 @@ export class HomePage {
 
   // Acción Crear Presupuesto
   crearPresupuesto() {
-    const nuevoPresupuesto: Presupuesto = { nombre: `Presupuesto ${this.presupuestos.length + 1}`, descripcion: 'Nueva descripción' };
-    this.presupuestos.push(nuevoPresupuesto);
-    alert('Presupuesto creado!');
+  const nuevoPresupuesto = { nombre: `Presupuesto ${this.presupuestos.length + 1}`, descripcion: 'Nueva descripción' };
+  this.presupuestos.push(nuevoPresupuesto);  // Agrega el nuevo presupuesto a la lista
+  this.router.navigate(['/presupuesto', nuevoPresupuesto.nombre]);  // Redirige a la página de Presupuesto con el nombre
   }
 
   // Acción Editar Presupuesto
