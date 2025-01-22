@@ -1,24 +1,47 @@
 <ion-header>
   <ion-toolbar>
-    <!-- Botón Regresar -->
-    <ion-buttons slot="start">
-      <ion-button (click)="regresar()">
-        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
-      </ion-button>
-    </ion-buttons>
     <ion-title>{{ nombrePresupuesto }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <!-- Filtro de Categorías -->
   <ion-list>
-    <ion-item-divider color="light">Lista de Gastos</ion-item-divider>
-
-    <ion-item *ngFor="let gasto of gastos">
-      <ion-label>
-        <h2>{{ gasto.descripcion }}</h2>
-        <p>Monto: {{ gasto.monto }}</p>
-      </ion-label>
+    <ion-item-divider color="light">Filtrar por Categoría</ion-item-divider>
+    <ion-item>
+      <ion-label>Selecciona una categoría</ion-label>
+      <ion-select
+        [(ngModel)]="categoriaSeleccionada"
+        placeholder="Selecciona una categoría"
+      >
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">
+          {{ categoria }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
+
+    <!-- Lista de Gastos -->
+    <ion-item-divider color="light">Lista de Gastos</ion-item-divider>
+    <ng-container *ngIf="obtenerGastosFiltrados().length > 0; else noGastos">
+      <ion-item *ngFor="let gasto of obtenerGastosFiltrados()">
+        <ion-label>
+          <h2>{{ gasto.descripcion }}</h2>
+          <p><strong>Monto:</strong> {{ gasto.monto | currency:'USD' }}</p> <!-- Monto en formato de moneda -->
+          <p><strong>Categoría:</strong> {{ gasto.categoria }}</p>
+          <p><strong>Fecha:</strong> {{ gasto.fecha | date:'shortDate' }}</p> <!-- Fecha con formato corto -->
+        </ion-label>
+      </ion-item>
+    </ng-container>
+    <!-- Mensaje si no hay gastos -->
+    <ng-template #noGastos>
+      <ion-item>
+        <ion-label>No hay gastos registrados en esta categoría.</ion-label>
+      </ion-item>
+    </ng-template>
   </ion-list>
+
+  <!-- Botón para regresar al Home -->
+  <ion-button expand="full" color="medium" (click)="regresar()">
+    Regresar al Home
+  </ion-button>
 </ion-content>

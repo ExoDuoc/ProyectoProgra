@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { GastosService } from '../services/gastos.service'; // Importa el servicio de gastos
 
 @Component({
   selector: 'app-crearpresupuesto',
@@ -13,13 +14,19 @@ export class CrearpresupuestoPage {
     fecha: '',
     descripcion: '',
     tipo: '', // Débito o Crédito
+    categoria: '', // Nueva propiedad para la categoría
     cuotas: null, // Solo para Crédito
   };
 
-  error: boolean = false;
-  gastos: any[] = []; // Lista de gastos generados
+  gastos: any[] = []; // Lista de gastos registrados
 
-  constructor(private router: Router, private toastController: ToastController) {}
+  error: boolean = false;
+
+  constructor(
+    private router: Router,
+    private toastController: ToastController,
+    private gastosService: GastosService // Inyecta el servicio
+  ) {}
 
   onTipoChange() {
     if (this.gasto.tipo === 'debito') {
@@ -38,28 +45,35 @@ export class CrearpresupuestoPage {
   }
 
   registrarGasto() {
-    if (!this.gasto.monto || !this.gasto.fecha || !this.gasto.descripcion || !this.gasto.tipo) {
+    // Verifica si algún campo está vacío
+    if (!this.gasto.monto || !this.gasto.fecha || !this.gasto.descripcion || !this.gasto.tipo || !this.gasto.categoria) {
       this.error = true;
       this.mostrarToast('Por favor completa todos los campos obligatorios.', 'danger');
       return;
     }
 
+    // Validación para Crédito (si no se ingresan cuotas)
     if (this.gasto.tipo === 'credito' && !this.gasto.cuotas) {
       this.error = true;
       this.mostrarToast('Por favor ingresa el número de cuotas.', 'danger');
       return;
     }
 
-    this.error = false;
+    this.error = false; // Restablecer estado de error
 
+    // Si es Débito, agregar el gasto
     if (this.gasto.tipo === 'debito') {
-      this.gastos.push({
+      this.gastosService.agregarGasto({
         monto: this.gasto.monto,
         fecha: this.gasto.fecha,
         descripcion: this.gasto.descripcion,
+        categoria: this.gasto.categoria,
+        tipo: 'Débito',
       });
+      this.gastos.push({ ...this.gasto, tipo: 'Débito' });
     }
 
+    // Si es Crédito, agregar las cuotas
     if (this.gasto.tipo === 'credito') {
       const montoPorCuota = this.gasto.monto / this.gasto.cuotas;
       const fechaBase = new Date(this.gasto.fecha);
@@ -68,11 +82,16 @@ export class CrearpresupuestoPage {
         const nuevaFecha = new Date(fechaBase);
         nuevaFecha.setMonth(fechaBase.getMonth() + i);
 
-        this.gastos.push({
+        const gastoCredito = {
           monto: montoPorCuota.toFixed(2),
           fecha: nuevaFecha.toISOString().split('T')[0],
           descripcion: `${this.gasto.descripcion} (Cuota ${i + 1})`,
-        });
+          categoria: this.gasto.categoria,
+          tipo: 'Crédito',
+        };
+
+        this.gastosService.agregarGasto(gastoCredito);
+        this.gastos.push(gastoCredito);
       }
     }
 
@@ -86,21 +105,26 @@ export class CrearpresupuestoPage {
       fecha: '',
       descripcion: '',
       tipo: '',
+      categoria: '',
       cuotas: null,
     };
   }
 
-  editarGasto(index: number) {
-    this.gasto = { ...this.gastos[index] }; // Copia los datos del gasto a editar
-    this.gastos.splice(index, 1); // Elimina temporalmente el gasto de la lista
-  }
-
-  eliminarGasto(index: number) {
-    this.gastos.splice(index, 1); // Elimina el gasto de la lista
-    this.mostrarToast('Gasto eliminado exitosamente.', 'success');
-  }
-
+  // Función para regresar al home
   regresarAlHome() {
     this.router.navigate(['/home']);
+  }
+
+  // Función para editar un gasto
+  editarGasto(index: number) {
+    const gastoEditado = this.gastos[index];
+    this.gasto = { ...gastoEditado }; // Rellenar el formulario con los datos del gasto seleccionado
+    this.gastos.splice(index, 1); // Eliminar el gasto de la lista para que pueda ser editado
+  }
+
+  // Función para eliminar un gasto
+  eliminarGasto(index: number) {
+    this.gastos.splice(index, 1); // Eliminar el gasto de la lista
+    this.mostrarToast('Gasto eliminado exitosamente.', 'success');
   }
 }

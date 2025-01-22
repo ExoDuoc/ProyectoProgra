@@ -39,6 +39,13 @@
         </ion-item>
         <div *ngIf="error && !gasto.descripcion" class="error">La descripción es obligatoria.</div>
 
+        <!-- Campo Categoría -->
+        <ion-item>
+          <ion-label position="floating">Categoría</ion-label>
+          <ion-input type="text" [(ngModel)]="gasto.categoria"></ion-input>
+        </ion-item>
+        <div *ngIf="error && !gasto.categoria" class="error">La categoría es obligatoria.</div>
+
         <!-- Campo Débito/Crédito -->
         <ion-item>
           <ion-label>Débito/Crédito</ion-label>
@@ -64,7 +71,7 @@
 
       <!-- Lista de gastos generados -->
       <ion-list *ngIf="gastos.length > 0">
-        <ion-item-divider color="light">Lista de Gastos Generadoss</ion-item-divider>
+        <ion-item-divider color="light">Lista de Gastos Generados</ion-item-divider>
         <ion-item-sliding *ngFor="let g of gastos; let i = index">
           <!-- Detalles del gasto -->
           <ion-item>
