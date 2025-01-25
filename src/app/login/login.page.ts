@@ -32,6 +32,7 @@ export class LoginPage {
 
     // Validación de credenciales
     if (this.user.email === 'admin' && this.user.password === 'admin') {
+      localStorage.setItem('token', 'usuarioAutenticado');
       this.router.navigate(['/home']);
     } else {
       alert('Credenciales incorrectas');

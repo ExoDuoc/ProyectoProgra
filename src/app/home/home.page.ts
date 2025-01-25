@@ -62,6 +62,7 @@ export class HomePage {
   // Función para cerrar sesión
   cerrarSesion() {
     // Aquí puedes realizar cualquier acción necesaria para cerrar la sesión, como limpiar datos de usuario o redirigir a login.
+    localStorage.removeItem('token'); // Elimina el token del localStorage
     alert('Sesión cerrada');
     this.router.navigate(['/login']);  // Redirige al login
   }

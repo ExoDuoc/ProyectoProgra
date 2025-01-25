@@ -23,28 +23,24 @@
           <ion-label position="floating">Monto</ion-label>
           <ion-input type="number" [(ngModel)]="gasto.monto"></ion-input>
         </ion-item>
-        <div *ngIf="error && !gasto.monto" class="error">El monto es obligatorio.</div>
 
         <!-- Campo Fecha -->
         <ion-item>
           <ion-label position="floating">Fecha</ion-label>
           <ion-input type="date" [(ngModel)]="gasto.fecha"></ion-input>
         </ion-item>
-        <div *ngIf="error && !gasto.fecha" class="error">La fecha es obligatoria.</div>
 
         <!-- Campo Descripción -->
         <ion-item>
           <ion-label position="floating">Descripción</ion-label>
           <ion-input type="text" [(ngModel)]="gasto.descripcion"></ion-input>
         </ion-item>
-        <div *ngIf="error && !gasto.descripcion" class="error">La descripción es obligatoria.</div>
 
         <!-- Campo Categoría -->
         <ion-item>
           <ion-label position="floating">Categoría</ion-label>
           <ion-input type="text" [(ngModel)]="gasto.categoria"></ion-input>
         </ion-item>
-        <div *ngIf="error && !gasto.categoria" class="error">La categoría es obligatoria.</div>
 
         <!-- Campo Débito/Crédito -->
         <ion-item>
@@ -54,16 +50,12 @@
             <ion-select-option value="credito">Crédito</ion-select-option>
           </ion-select>
         </ion-item>
-        <div *ngIf="error && !gasto.tipo" class="error">Debe seleccionar Débito o Crédito.</div>
 
         <!-- Campo Cuotas (Visible solo si es Crédito) -->
         <ion-item *ngIf="gasto.tipo === 'credito'">
           <ion-label position="floating">Cantidad de Cuotas</ion-label>
           <ion-input type="number" [(ngModel)]="gasto.cuotas"></ion-input>
         </ion-item>
-        <div *ngIf="error && gasto.tipo === 'credito' && !gasto.cuotas" class="error">
-          La cantidad de cuotas es obligatoria para crédito.
-        </div>
 
         <!-- Botón para registrar -->
         <ion-button expand="block" color="primary" (click)="registrarGasto()">Registrar Gasto</ion-button>
