@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GastosService } from '../services/gastos.service'; 
-import { ChartOptions, ChartData, ChartType } from 'chart.js';
+
 
 @Component({
   selector: 'app-presupuesto',
@@ -15,12 +15,8 @@ export class PresupuestoPage implements OnInit {
   categorias: string[] = []; 
   categoriaSeleccionada: string = ''; 
   emailUsuario: any; // Variable para almacenar el email del usuario logueado
-  public pieChartOptions: ChartOptions = {
-    responsive: true,
-  };
-  public pieChartLabels: string[] = ['Comida', 'Transporte', 'Vivienda'];
-  public pieChartData: number[] = [40, 30, 30];
-  public pieChartType: ChartType = 'pie';
+
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -77,7 +73,7 @@ export class PresupuestoPage implements OnInit {
       alert('Categoría creada exitosamente');
     }
   }
-  // Validar los datos del formulario
+  
   validarFormulario(): boolean {
     if (!this.nombrePresupuesto || !this.descripcionPresupuesto || this.montoPresupuesto <= 0) {
       alert('Por favor, complete todos los campos antes de guardar.');
