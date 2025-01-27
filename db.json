@@ -1,1 +1,22 @@
-{}
+{
+  "usuarios": [
+    {
+      "id": "e5e2",
+      "nombre": "Felipe",
+      "email": "fgallardo",
+      "password": "qwerty",
+      "f_nacimiento": "2025-01-25",
+      "genero": "m",
+      "presupuestos": []
+    },
+    {
+      "id": "7361",
+      "nombre": "Byron",
+      "email": "byron33@gmail.com",
+      "password": "123",
+      "f_nacimiento": "2025-01-24",
+      "genero": "Masculino",
+      "presupuestos": []
+    }
+  ]
+}

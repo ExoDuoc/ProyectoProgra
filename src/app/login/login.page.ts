@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginPage {
     password: false
   };
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private usuarioService: UsuarioService) {}
 
   ingresar() {
     // Reiniciamos los errores antes de validar
@@ -30,13 +31,24 @@ export class LoginPage {
       return;
     }
 
-    // Validación de credenciales
-    if (this.user.email === 'admin' && this.user.password === 'admin') {
-      localStorage.setItem('token', 'usuarioAutenticado');
-      this.router.navigate(['/home']);
-    } else {
-      alert('Credenciales incorrectas');
-    }
+    // Consultar el db.json para validar las credenciales
+    this.usuarioService.validarUsuario(this.user.email, this.user.password).subscribe(
+      (usuarios: any[]) => {
+        if (usuarios.length > 0) {
+          // Credenciales correctas
+          localStorage.setItem('token', 'usuarioAutenticado');
+          alert('Inicio de sesión exitoso.');
+          this.router.navigate(['/home']);
+        } else {
+          // Credenciales incorrectas
+          alert('Credenciales incorrectas.');
+        }
+      },
+      (error) => {
+        console.error('Error al validar el usuario:', error);
+        alert('Ocurrió un error al intentar iniciar sesión.');
+      }
+    );
   }
 
   recuperarContrasena() {
