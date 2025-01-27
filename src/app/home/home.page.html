@@ -19,28 +19,32 @@
         Crear Presupuesto
       </ion-button>
 
-      <!-- Nuevo botón Agregar Gastos -->
+      <!-- Nuevo botón Agregar Gastos 
       <ion-button expand="block" color="secondary" routerLink="/crearpresupuesto">
         Agregar Gastos
-      </ion-button>
-      
-      <ion-list>
+      </ion-button>-->
+
+      <!-- Mostrar la lista de presupuestos o mensaje de no presupuestos -->
+      <ion-list *ngIf="!noHayPresupuestos; else noPresupuestosTemplate">
         <ion-item-divider color="light">Lista de Presupuestos</ion-item-divider>
 
         <!-- Mostrar los presupuestos en una lista -->
         <ion-item *ngFor="let presupuesto of presupuestos">
           <ion-label>{{ presupuesto.nombre }}</ion-label>
+          <ion-label>{{ presupuesto.descripcion }}</ion-label>
           <ion-button fill="outline" color="secondary" (click)="editarPresupuesto(presupuesto)">Editar</ion-button>
           <ion-button fill="outline" color="danger" (click)="eliminarPresupuesto(presupuesto)">Eliminar</ion-button>
         </ion-item>
       </ion-list>
 
-      <!-- Sección para el CRUD 
-      <ion-item-divider color="light">Acciones CRUD</ion-item-divider>
-
-      <ion-button expand="block" color="success" (click)="crear()">Crear</ion-button>
-      <ion-button expand="block" color="warning" (click)="modificar()">Modificar</ion-button>
-      <ion-button expand="block" color="danger" (click)="eliminar()">Eliminar</ion-button>-->
+      <!-- Template para cuando no haya presupuestos -->
+      <ng-template #noPresupuestosTemplate>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>No hay presupuestos creados</ion-card-title>
+          </ion-card-header>
+        </ion-card>
+      </ng-template>
     </ion-card-content>
   </ion-card>
 </ion-content>

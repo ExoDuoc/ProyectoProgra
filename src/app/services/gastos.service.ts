@@ -1,37 +1,56 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators'; // Asegúrate de importar switchMap
 
 @Injectable({
   providedIn: 'root',
 })
 export class GastosService {
-  private gastos: any[] = [];
+  private urlPresupuestos = 'http://localhost:3000/presupuestos'; // URL para los presupuestos
+  private urlCategorias = 'http://localhost:3000/categorias'; // URL para las categorías
+  private apiUrl = 'http://localhost:3000/usuarios'; // Asegúrate de que la URL apunte al servidor de JSON Server
 
-  constructor() {
-    // Cargar los gastos desde el localStorage si existen
-    const storedGastos = localStorage.getItem('gastos');
-    if (storedGastos) {
-      this.gastos = JSON.parse(storedGastos);
-    }
+  constructor(private http: HttpClient) {}
+
+  // Método para obtener todos los gastos de un presupuesto
+  obtenerGastos(): Observable<any[]> {
+    return this.http.get<any[]>(this.urlPresupuestos);
   }
 
-  // Método para agregar un nuevo gasto
+  // Método para agregar un nuevo gasto (puede ser cualquier gasto relacionado con un presupuesto)
   agregarGasto(gasto: any) {
-    this.gastos.push(gasto);
-    this.guardarGastos(); // Guardar los cambios en localStorage
+    // Aquí puedes enviar el nuevo gasto al servidor y asociarlo al presupuesto
+    return this.http.post(this.urlPresupuestos, gasto);
   }
 
-  // Método para obtener todos los gastos
-  obtenerGastos() {
-    return this.gastos;
+  // Método para obtener todas las categorías
+  obtenerCategorias(): Observable<any[]> {
+    return this.http.get<any[]>(this.urlCategorias);
   }
 
-  // Método para obtener gastos por categoría
-  obtenerGastosPorCategoria(categoria: string) {
-    return this.gastos.filter(gasto => gasto.categoria === categoria);
+  // Método para agregar una nueva categoría
+  agregarCategoria(nuevaCategoria: string): Observable<any> {
+    const categoria = { nombre: nuevaCategoria };
+    return this.http.post(this.urlCategorias, categoria);
   }
 
-  // Método para guardar los gastos en localStorage
-  guardarGastos() {
-    localStorage.setItem('gastos', JSON.stringify(this.gastos));
+
+  guardarPresupuesto(presupuesto: any, emailUsuario: string): Observable<any> {
+    // Primero, obtener el usuario por email
+    return this.http.get<any[]>(`${this.apiUrl}?email=${emailUsuario}`).pipe(
+      switchMap((usuarios: any[]) => {
+        if (usuarios.length > 0) {
+          // Si el usuario existe, agregar el presupuesto
+          const usuario = usuarios[0];
+          usuario.presupuestos.push(presupuesto); // Agregamos el nuevo presupuesto
+
+          // Actualizamos el usuario con el nuevo presupuesto
+          return this.http.put(`${this.apiUrl}/${usuario.id}`, usuario);
+        } else {
+          throw new Error('Usuario no encontrado');
+        }
+      })
+    );
   }
 }

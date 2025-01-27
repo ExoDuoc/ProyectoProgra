@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../services/usuario.service'; // Asegúrate de que el path sea correcto
 
 // Definir la interfaz para un presupuesto
 interface Presupuesto {
@@ -12,22 +13,48 @@ interface Presupuesto {
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  presupuestos: Presupuesto[] = []; // Lista inicial vacía
+  noHayPresupuestos: boolean = false; // Flag para mostrar mensaje de "no hay presupuestos"
+  usuarioEmail: string | null = null; // Para almacenar el email del usuario autenticado
 
-  // Lista de presupuestos (simulada sin conexión a DB)
-  presupuestos: Presupuesto[] = [
-    { nombre: 'Presupuesto 1', descripcion: 'Descripción del presupuesto 1' },
-    { nombre: 'Presupuesto 2', descripcion: 'Descripción del presupuesto 2' },
-  ];
+  constructor(private router: Router, private usuarioService: UsuarioService) {}
 
-  // Inyecta Router en el constructor
-  constructor(private router: Router) { }
-
+  ngOnInit() {
+    // Obtén el email del usuario autenticado desde el localStorage
+    this.usuarioEmail = localStorage.getItem('usuarioAutenticado');
+  
+    if (this.usuarioEmail) {
+      // Consulta los usuarios en la base de datos y encuentra al usuario con el email correspondiente
+      this.usuarioService.obtenerUsuarios().subscribe(
+        (usuarios) => {
+          const usuarioEncontrado = usuarios.find(
+            (usuario) => usuario.email === this.usuarioEmail
+          );
+          
+          if (usuarioEncontrado) {
+            // Si se encuentra el usuario, asigna sus presupuestos
+            this.presupuestos = usuarioEncontrado.presupuestos;
+            console.log("presepuesto del usuario : ", this.presupuestos)
+            this.noHayPresupuestos = this.presupuestos.length === 0; // Determina si no hay presupuestos
+          } else {
+            this.noHayPresupuestos = true; // Si no se encuentra el usuario
+          }
+        },
+        (error) => {
+          console.error('Error al cargar los usuarios:', error);
+          alert('Ocurrió un error al cargar los presupuestos.');
+        }
+      );
+    } else {
+      alert('No se encontró un usuario autenticado.');
+      this.router.navigate(['/login']);
+    }
+  }
+  
   // Acción Crear Presupuesto
   crearPresupuesto() {
-  const nuevoPresupuesto = { nombre: `Presupuesto ${this.presupuestos.length + 1}`, descripcion: 'Nueva descripción' };
-  this.presupuestos.push(nuevoPresupuesto);  // Agrega el nuevo presupuesto a la lista
-  this.router.navigate(['/presupuesto', nuevoPresupuesto.nombre]);  // Redirige a la página de Presupuesto con el nombre
+    this.router.navigate(['/presupuesto']);  // Redirige a la página de Presupuesto con el nombre
   }
 
   // Acción Editar Presupuesto
@@ -46,23 +73,10 @@ export class HomePage {
     }
   }
 
-  // CRUD (sin conexión a DB)
-  crear() {
-    alert('Crear acción');
-  }
-
-  modificar() {
-    alert('Modificar acción');
-  }
-
-  eliminar() {
-    alert('Eliminar acción');
-  }
-
   // Función para cerrar sesión
   cerrarSesion() {
-    // Aquí puedes realizar cualquier acción necesaria para cerrar la sesión, como limpiar datos de usuario o redirigir a login.
     localStorage.removeItem('token'); // Elimina el token del localStorage
+    localStorage.removeItem('email'); // Elimina el email del usuario del localStorage
     alert('Sesión cerrada');
     this.router.navigate(['/login']);  // Redirige al login
   }

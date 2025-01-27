@@ -16,9 +16,19 @@ export class UsuarioService {
     return this.http.get<any[]>(url);
   }
 
-  validarUsuario(email: string, password: string): Observable<any[]> {
-    const url = `${this.apiUrl}?email=${email}&password=${password}`;
+  obtenerPresupuestos(email: string): Observable<any[]> {
+    const url = `${this.apiUrl}?email=${email}`;
     return this.http.get<any[]>(url);
+  }
+  
+  obtenerUsuarios(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  validarUsuario(email: string, password: string): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}?email=${email}&password=${password}`
+    );
   }
 
   // Registra un nuevo usuario
