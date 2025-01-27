@@ -2,7 +2,6 @@
   <ion-toolbar>
     <ion-title>Registrar Gasto</ion-title>
     <ion-buttons slot="start">
-      <!-- Botón para regresar al Home -->
       <ion-button color="primary" (click)="regresarAlHome()">
         <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
         Home
@@ -59,13 +58,16 @@
 
         <!-- Botón para registrar -->
         <ion-button expand="block" color="primary" (click)="registrarGasto()">Registrar Gasto</ion-button>
+
+        <!-- Botón para abrir el modal -->
+        <ion-button expand="block" color="secondary" (click)="abrirModalFotoBoleta()">Adjuntar Foto de Boleta</ion-button>
       </ion-list>
 
-      <!-- Lista de gastos generados -->
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filtrarGastos()" debounce="500" placeholder="Buscar por nombre..."></ion-searchbar>
+
       <ion-list *ngIf="gastos.length > 0">
         <ion-item-divider color="light">Lista de Gastos Generados</ion-item-divider>
         <ion-item-sliding *ngFor="let g of gastos; let i = index">
-          <!-- Detalles del gasto -->
           <ion-item>
             <ion-label>
               <h2>{{ g.descripcion }}</h2>
@@ -74,7 +76,6 @@
             </ion-label>
           </ion-item>
 
-          <!-- Botones de edición y eliminación -->
           <ion-item-options side="end">
             <ion-item-option color="warning" (click)="editarGasto(i)">Editar</ion-item-option>
             <ion-item-option color="danger" (click)="eliminarGasto(i)">Eliminar</ion-item-option>
@@ -83,4 +84,42 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+  <!-- Modal para Adjuntar Foto de Boleta -->
+  <ion-modal [isOpen]="isModalOpen" (ionModalDidDismiss)="cerrarModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Adjuntar Foto de Boleta</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModal()">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Arrastra o Toma una Foto</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button expand="full" color="secondary" (click)="simularAccion('arrastrar')">
+              <ion-icon slot="start" name="arrow-down-circle-outline"></ion-icon>
+              Arrastra tu boleta aquí
+            </ion-button>
+            <div class="or-separator">
+              <span>o</span>
+            </div>
+            <ion-button expand="full" color="secondary" (click)="simularAccion('camara')">
+              <ion-icon slot="start" name="camera-outline"></ion-icon>
+              Usar cámara
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

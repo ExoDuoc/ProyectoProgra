@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Detalle del Presupuesto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Solo mostrar si el presupuesto está disponible -->
+  <ion-card *ngIf="presupuesto">
+    <ion-card-header>
+      <ion-card-title>{{ presupuesto.nombre }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Descripción:</strong> {{ presupuesto.descripcion }}</p>
+      <p><strong>Monto:</strong> {{ presupuesto.monto | currency }}</p>
+      <p><strong>Categoría:</strong> {{ presupuesto.categoria }}</p>
+
+      <!-- Mostrar lista de gastos si existen -->
+      <ion-list *ngIf="presupuesto.gastos.length > 0">
+        <ion-item-divider color="light">Gastos</ion-item-divider>
+        <ion-item *ngFor="let gasto of presupuesto.gastos">
+          <ion-label>{{ gasto.descripcion }} - {{ gasto.monto | currency }}</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-item *ngIf="presupuesto.gastos.length === 0">
+        <ion-label>No hay gastos registrados</ion-label>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button color="primary" expand="block" (click)="volver()">Volver</ion-button>
+</ion-content>

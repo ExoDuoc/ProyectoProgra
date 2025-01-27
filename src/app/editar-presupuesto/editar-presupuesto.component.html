@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ nombrePresupuesto || 'Editar Presupuesto' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Formulario para Editar Presupuesto</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Nombre del Presupuesto</ion-label>
+        <ion-input [(ngModel)]="nombrePresupuesto" placeholder="Ej. Presupuesto de vacaciones"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Descripción del Presupuesto</ion-label>
+        <ion-input [(ngModel)]="descripcionPresupuesto" placeholder="Ej. Presupuesto para planificar viaje"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">Monto Total</ion-label>
+        <ion-input type="number" [(ngModel)]="montoPresupuesto" placeholder="Ej. 1000"></ion-input>
+      </ion-item>
+
+      <!-- Dropdown para seleccionar categoría -->
+      <ion-item>
+        <ion-label position="floating">Categoría</ion-label>
+        <ion-select [(ngModel)]="categoriaSeleccionada">
+          <ion-select-option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="full" color="primary" (click)="editarPresupuesto()">
+        Guardar Cambios
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="full" color="medium" (click)="regresar()">
+    Regresar al Home
+  </ion-button>
+</ion-content>

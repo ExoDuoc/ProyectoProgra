@@ -9,6 +9,7 @@
       "genero": "m",
       "presupuestos": [
         {
+          "id": "presupuesto1", 
           "nombre": "nombre presupuesto",
           "descripcion": "desc presupuesto",
           "monto": 30000,
@@ -16,6 +17,7 @@
           "gastos": []
         },
         {
+          "id": "presupuesto2", 
           "nombre": "pres 2",
           "descripcion": "desc 2",
           "monto": 1230,
@@ -31,7 +33,16 @@
       "password": "123",
       "f_nacimiento": "2025-01-24",
       "genero": "Masculino",
-      "presupuestos": []
+      "presupuestos": [
+        {
+          "id": "presupuesto3",  
+          "nombre": "presupuesto",
+          "descripcion": "descripc",
+          "monto": 12000,
+          "categoria": "Comida",
+          "gastos": []
+        }
+      ]
     }
   ],
   "categorias": [

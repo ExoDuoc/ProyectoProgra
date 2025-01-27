@@ -20,6 +20,7 @@ export class UsuarioService {
     const url = `${this.apiUrl}?email=${email}`;
     return this.http.get<any[]>(url);
   }
+
   
   obtenerUsuarios(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);

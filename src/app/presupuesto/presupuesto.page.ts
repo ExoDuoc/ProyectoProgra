@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GastosService } from '../services/gastos.service'; 
+import { ChartOptions, ChartData, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-presupuesto',
@@ -14,7 +15,12 @@ export class PresupuestoPage implements OnInit {
   categorias: string[] = []; 
   categoriaSeleccionada: string = ''; 
   emailUsuario: any; // Variable para almacenar el email del usuario logueado
-
+  public pieChartOptions: ChartOptions = {
+    responsive: true,
+  };
+  public pieChartLabels: string[] = ['Comida', 'Transporte', 'Vivienda'];
+  public pieChartData: number[] = [40, 30, 30];
+  public pieChartType: ChartType = 'pie';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -36,6 +42,7 @@ export class PresupuestoPage implements OnInit {
   async crearPresupuesto() {
     if (this.validarFormulario()) {
       const nuevoPresupuesto = {
+        id: this.generarIdUnico(), // Asigna un ID único
         nombre: this.nombrePresupuesto,
         descripcion: this.descripcionPresupuesto,
         monto: this.montoPresupuesto,
@@ -56,6 +63,10 @@ export class PresupuestoPage implements OnInit {
     }
   }
 
+  generarIdUnico(): string {
+    return Math.random().toString(36).substr(2, 9); // O usa una librería para UUID
+  }
+  
   abrirModalCrearCategoria() {
     // Aquí debes implementar la lógica para abrir un modal o un cuadro de texto
     // que permita al usuario ingresar una nueva categoría.

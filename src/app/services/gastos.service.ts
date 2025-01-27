@@ -18,6 +18,15 @@ export class GastosService {
     return this.http.get<any[]>(this.urlPresupuestos);
   }
 
+  editarPresupuesto(id: string, presupuesto: any): Observable<any> {
+    return this.http.put<any>(`${this.urlPresupuestos}/${id}`, presupuesto);
+  }
+  
+
+  obtenerPresupuestoPorId(id: string): Observable<any> {
+    return this.http.get<any>(`${this.urlPresupuestos}/${id}`);
+  }
+
   // Método para agregar un nuevo gasto (puede ser cualquier gasto relacionado con un presupuesto)
   agregarGasto(gasto: any) {
     // Aquí puedes enviar el nuevo gasto al servidor y asociarlo al presupuesto

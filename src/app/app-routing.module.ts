@@ -32,6 +32,16 @@
       canActivate: [AuthGuard] 
     },    
     {
+      path: 'verpresupuesto',
+      loadChildren: () => import('./ver-presupuesto/ver-presupuesto.module').then(m => m.VerPresupuestoModule),
+      canActivate: [AuthGuard] 
+    },    
+    {
+      path: 'editarpresupuesto',
+      loadChildren: () => import('./editar-presupuesto/editar-presupuesto.module').then(m => m.EditarPresupuestoModule),
+      canActivate: [AuthGuard] 
+    },  
+    {
       path: 'compartir-presupuesto',
       loadChildren: () => import('./compartir-presupuesto/compartir-presupuesto.module').then(m => m.CompartirPresupuestoPageModule),
       canActivate: [AuthGuard] 

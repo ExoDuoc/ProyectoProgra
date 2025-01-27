@@ -3,10 +3,15 @@ import { Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario.service'; // Asegúrate de que el path sea correcto
 
 // Definir la interfaz para un presupuesto
-interface Presupuesto {
+export interface Presupuesto {
+  id: string; // Ahora el presupuesto tendrá un id
   nombre: string;
   descripcion: string;
+  monto: number;
+  categoria: string;
+  gastos: any[]; // Ajusta este tipo según la estructura real de los gastos
 }
+
 
 @Component({
   selector: 'app-home',
@@ -17,6 +22,7 @@ export class HomePage implements OnInit {
   presupuestos: Presupuesto[] = []; // Lista inicial vacía
   noHayPresupuestos: boolean = false; // Flag para mostrar mensaje de "no hay presupuestos"
   usuarioEmail: string | null = null; // Para almacenar el email del usuario autenticado
+  usuarios: any[] = []; // Almacenar los usuarios obtenidos desde la API
 
   constructor(private router: Router, private usuarioService: UsuarioService) {}
 
@@ -59,11 +65,38 @@ export class HomePage implements OnInit {
 
   // Acción Editar Presupuesto
   editarPresupuesto(presupuesto: Presupuesto) {
-    const index = this.presupuestos.indexOf(presupuesto);
-    this.presupuestos[index] = { ...presupuesto, nombre: 'Presupuesto Editado', descripcion: 'Descripción actualizada' };
-    alert('Presupuesto editado!');
+    this.router.navigate(['/editarpresupuesto'], {
+      state: { presupuesto: { ...presupuesto, id: presupuesto.id } }
+    });
   }
 
+  verPresupuesto(presupuesto: Presupuesto) {
+    console.log("ver presupuesto")
+    this.router.navigate(['/verpresupuesto'], { state: { presupuesto } });
+  }
+
+  compartirPorCorreo(presupuesto: any) {
+
+    this.usuarioService.obtenerUsuarios().subscribe(
+      (data) => {
+        this.usuarios = data;
+      },
+      (error) => {
+        console.error('Error al obtener los usuarios:', error);
+      }
+    );
+    const email = prompt("Por favor ingresa el correo para compartir el presupuesto:");
+
+    // Validar si el correo existe en la base de datos
+    const usuario = this.usuarios.find(usuario => usuario.email === email);
+
+    if (usuario) {
+      alert(`Presupuesto "${presupuesto.nombre}" enviado a ${email}`);
+      // Aquí agregarías la lógica para enviar el correo (ej. usando un servicio de backend)
+    } else {
+      alert('El correo ingresado no existe.');
+    }
+  }
   // Acción Eliminar Presupuesto
   eliminarPresupuesto(presupuesto: Presupuesto) {
     const index = this.presupuestos.indexOf(presupuesto);

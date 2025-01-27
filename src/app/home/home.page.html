@@ -19,10 +19,10 @@
         Crear Presupuesto
       </ion-button>
 
-      <!-- Nuevo botón Agregar Gastos 
+      <!-- Nuevo botón Agregar Gastos -->
       <ion-button expand="block" color="secondary" routerLink="/crearpresupuesto">
         Agregar Gastos
-      </ion-button>-->
+      </ion-button>
 
       <!-- Mostrar la lista de presupuestos o mensaje de no presupuestos -->
       <ion-list *ngIf="!noHayPresupuestos; else noPresupuestosTemplate">
@@ -32,9 +32,12 @@
         <ion-item *ngFor="let presupuesto of presupuestos">
           <ion-label>{{ presupuesto.nombre }}</ion-label>
           <ion-label>{{ presupuesto.descripcion }}</ion-label>
+          <ion-button fill="outline" color="secondary" (click)="verPresupuesto(presupuesto)">Ver</ion-button>
           <ion-button fill="outline" color="secondary" (click)="editarPresupuesto(presupuesto)">Editar</ion-button>
           <ion-button fill="outline" color="danger" (click)="eliminarPresupuesto(presupuesto)">Eliminar</ion-button>
+          <ion-button fill="outline" color="primary" (click)="compartirPorCorreo(presupuesto)">Compartir por Correo</ion-button>
         </ion-item>
+        
       </ion-list>
 
       <!-- Template para cuando no haya presupuestos -->

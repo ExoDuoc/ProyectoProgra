@@ -17,8 +17,13 @@ export class CrearpresupuestoPage {
     categoria: '', // Nueva propiedad para la categoría
     cuotas: null, // Solo para Crédito
   };
+  isModalOpen: boolean = false;  // Para controlar el estado del modal
+
+
 
   gastos: any[] = []; // Lista de gastos registrados
+  gastosFiltrados: any[] = [...this.gastos]; // Inicialmente muestra todos los gastos
+  searchTerm: string = ''; // Almacena el término de búsqueda
 
   error: boolean = false;
 
@@ -27,6 +32,30 @@ export class CrearpresupuestoPage {
     private toastController: ToastController,
     private gastosService: GastosService // Inyecta el servicio
   ) {}
+
+  abrirModalFotoBoleta() {
+    this.isModalOpen = true;
+  }
+
+  // Cerrar el modal
+  cerrarModal() {
+    this.isModalOpen = false;
+  }
+
+  // Simular la acción de arrastrar o usar cámara
+  simularAccion(accion: string) {
+    if (accion === 'arrastrar') {
+      console.log('Simulando arrastre de archivo...');
+    } else if (accion === 'camara') {
+      console.log('Simulando uso de cámara...');
+    }
+    this.cerrarModal(); // Cierra el modal después de hacer clic
+  }
+  filtrarGastos() {
+    this.gastosFiltrados = this.gastos.filter(gasto =>
+      gasto.descripcion.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
 
   onTipoChange() {
     if (this.gasto.tipo === 'debito') {
